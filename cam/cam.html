@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ELEIÇÕES CAM 2024</title>
+    <style>
+        /* Estilização para o layout */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #323333; /* Tom de verde claro */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        #content {
+            background-color: #ffffff; /* Fundo branco */
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+            width: 100%;
+            max-width: 600px;
+        }
+
+        h1, h2 {
+            margin: 0 0 20px;
+            color: #007bff; /* Azul */
+            text-align: center;
+        }
+
+        .candidate {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            position: relative;
+            text-align: center;
+        }
+
+        .candidate img {
+            max-width: 80px;
+            max-height: 80px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+
+        .delete-button {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: #e9ecef; /* Tom de cinza */
+            color: #44831f; /* Tom mais escuro de cinza */
+            border: none;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            padding: 0;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .delete-button:hover {
+            background-color: #adb5bd; /* Tom mais escuro de cinza */
+            color: #fff; /* Branco */
+        }
+
+        .vote-button {
+            padding: 10px 20px;
+            background-color: #28a745; /* Verde */
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .vote-button:hover {
+            background-color: #218838; /* Tom mais escuro de verde */
+        }
+
+        .file-upload {
+            display: none;
+        }
+
+        .file-upload-button {
+            background-color: #007bff; /* Azul */
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            padding: 5px 10px;
+            margin-bottom: 5px;
+        }
+
+        .file-upload-button:hover {
+            background-color: #0056b3; /* Tom mais escuro de azul */
+        }
+
+        .add-candidate-button {
+            background-color: #007bff; /* Azul */
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            padding: 10px 20px;
+            margin-bottom: 20px;
+        }
+
+        .add-candidate-button:hover {
+            background-color: #0056b3; /* Tom mais escuro de azul */
+        }
+
+        #end-voting {
+            display: none;
+        }
+
+        #voting-results {
+            display: none;
+        }
+
+        #confirm-vote-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #confirm-vote-dialog {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        #confirm-vote-dialog p {
+            margin: 0 0 10px;
+            text-align: center;
+        }
+
+        #confirm-vote-buttons {
+            text-align: center;
+        }
+
+        .confirm-vote-button {
+            padding: 10px 20px;
+            background-color: #28a745; /* Verde */
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-right: 10px;
+        }
+
+        .confirm-vote-button:hover {
+            background-color: #218838; /* Tom mais escuro de verde */
+        }
+
+        .cancel-vote-button {
+            padding: 10px 20px;
+            background-color: #dc3545; /* Vermelho */
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .cancel-vote-button            :hover {
+                background-color: #c82333; /* Tom mais escuro de vermelho */
+            }
+
+          
+         
+         @import url(tiny.css) (min-width:300px);
+            @import url(small.css) (min-width:600px);
+            @import url(big.css) (min-width:900px);
+
+            @media screen and (max-width: 300px) {
+            /* estilos */
+            }
+            @media screen and (max-width: 1024px) {
+             /* Estilos */
+            }
+    </style>
+</head>
+<body>
+    <div id="content">
+        <h1 contenteditable="true">ELEIÇÕES CAM 2024 DOS 1° ANOS</h1>
+
+        <div id="candidates"></div>
+
+        <button class="add-candidate-button" onclick="addCandidate()">Adicionar Candidato</button><br><br>
+
+        <button id="start-voting" class="vote-button" onclick="startVoting()">Iniciar Votação</button>
+        <button id="end-voting" class="vote-button" onclick="endVoting()" style="display: none;">Finalizar Votação</button>
+
+        <div id="voting-results">
+            <h2>Resultados da Votação</h2>
+            <ul id="results-list"></ul>
+        </div>
+
+        <p>Votos realizados: <span id="vote-count">0</span></p>
+    </div>
+
+    <div id="confirm-vote-overlay">
+        <div id="confirm-vote-dialog">
+            <p>Confirma o voto?</p>
+            <div id="confirm-vote-buttons">
+                <button class="confirm-vote-button" onclick="confirmVote()">Sim</button>
+                <button class="cancel-vote-button" onclick="cancelVote()">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var candidates = [
+            { id: 1, name: "Lucas", photo: "images.png", class: "9°A" },
+            { id: 2, name: "Mariana", photo: "images.png", class: "9°B" },
+            { id: 4, name: "Lucas", photo: "images.png", class: "1°A" },
+            { id: 5, name: "Julia", photo: "images.png", class: "1°C" },
+        ];
+
+        var votingResults = {};
+        var totalVotes = 0;
+        var nextCandidateId = 3;
+
+        function displayCandidates() {
+            var candidatesDiv = document.getElementById("candidates");
+            candidatesDiv.innerHTML = "";
+
+            candidates.forEach(function(candidate) {
+                var candidateCard = document.createElement("div");
+                candidateCard.classList.add("candidate");
+                candidateCard.innerHTML = `
+                    <div>
+                        <img src="${candidate.photo}" alt="${candidate.name}">
+                        <input type="file" accept="image/*" onchange="handleFileUpload(event, ${candidate.id})" class="file-upload">
+                        <p contenteditable="true">${candidate.name}</p>
+                        <p contenteditable="true">${candidate.class}</p>
+                        <button class="vote-button" onclick="confirmVotePrompt(${candidate.id})">Votar</button>
+                        <button class="delete-button" onclick="deleteCandidate(${candidate.id})">x</button>
+                    </div>
+                `;
+                candidatesDiv.appendChild(candidateCard);
+            });
+        }
+
+        function addCandidate() {
+            var newCandidate = {
+                id: nextCandidateId,
+                name: "Candidato " + nextCandidateId,
+                photo: "candidato_default.jpg",
+                class: ""
+            };
+            candidates.push(newCandidate);
+            nextCandidateId++;
+            displayCandidates();
+        }
+
+        function deleteCandidate(id) {
+            candidates = candidates.filter(candidate => candidate.id !== id);
+            displayCandidates();
+        }
+
+        function startVoting() {
+            document.getElementById("start-voting").style.display = "none";
+            document.getElementById("end-voting").style.display = "inline";
+            var voteButtons = document.getElementsByClassName("vote-button");
+            for (var i = 0; i < voteButtons.length; i++) {
+                voteButtons[i].disabled = false;
+            }
+        }
+
+        function endVoting() {
+            document.getElementById("start-voting").style.display = "inline";
+            document.getElementById("end-voting").style.display = "none";
+            document.getElementById("voting-results").style.display = "block";
+
+            var resultsList = document.getElementById("results-list");
+            resultsList.innerHTML = "";
+            for (var candidate in votingResults) {
+                var listItem = document.createElement("li");
+                listItem.textContent = `${candidate}: ${votingResults[candidate]} voto(s)`;
+                resultsList.appendChild(listItem);
+            }
+            console.log("Votação finalizada!");
+            console.log("Resultado da votação:");
+            console.log(votingResults);
+        }
+
+        function confirmVotePrompt(id) {
+            var candidateName = candidates.find(candidate => candidate.id === id).name;
+            var confirmVoteOverlay = document.getElementById("confirm-vote-overlay");
+            confirmVoteOverlay.style.display = "flex";
+            document.getElementById("confirm-vote-dialog").setAttribute("data-id", id);
+        }
+
+        function confirmVote() {
+            var id = parseInt(document.getElementById("confirm-vote-dialog").getAttribute("data-id"));
+            voteForCandidate(id);
+            var confirmVoteOverlay = document.getElementById("confirm-vote-overlay");
+            confirmVoteOverlay.style.display = "none";
+        }
+
+        function cancelVote() {
+            var confirmVoteOverlay = document.getElementById("confirm-vote-overlay");
+            confirmVoteOverlay.style.display = "none";
+        }
+
+        function voteForCandidate(id) {
+            var candidateName = candidates.find(candidate => candidate.id === id).name;
+            if (!votingResults[candidateName]) {
+                votingResults[candidateName] = 0;
+            }
+            votingResults[candidateName]++;
+            totalVotes++;
+            document.getElementById("vote-count").textContent = totalVotes;
+            alert("Voto registrado para " + candidateName);
+        }
+
+        function handleFileUpload(event, id) {
+            var file = event.target.files[0];
+            if (file) {
+                var reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = function() {
+                    var candidateIndex = candidates.findIndex(candidate => candidate.id === id);
+                    if (candidateIndex !== -1) {
+                        candidates[candidateIndex].photo = reader.result;
+                        displayCandidates();
+                    }
+                }
+            }
+        }
+
+        displayCandidates();
+    </script>
+</body>
+</html>
